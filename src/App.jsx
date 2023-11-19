@@ -23,7 +23,7 @@ function App() {
   let osc3 = new Tone.Oscillator(111, "sine").connect(autoFilter).start()
   osc2.volume.value = -33
   let omniOsc = new Tone.OmniOscillator(66, "pwm").connect(autoFilter).start();
-  omniOsc.value = -54
+  omniOsc.value = -59
 
 
   let wave = new Tone.Waveform()
