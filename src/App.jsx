@@ -1,10 +1,10 @@
 import * as Tone from "tone";
 import  * as p5 from "p5";
 import { useState } from "react";
-
 import useDOMControl from "./useDOMControl";
-
+import Writes from "./Writes";
 import './App.css'
+
 
 function App() {
 
@@ -12,48 +12,58 @@ function App() {
   let [play, setPlay] = useState(false);
 
   //synth
-  
   let master = new Tone.Gain().toDestination();
-  let osc1 = new Tone.Oscillator(440, 'sine').connect(master).start()
-  osc1.volume.value = -30
-  let osc2 = new Tone.Oscillator(285, "sine").connect(master).start()
-  osc2.volume.value = -10
+
+  let autoFilter = new Tone.AutoFilter("1n").connect(master).start();
+
+  let osc1 = new Tone.Oscillator(444, 'sine').connect(autoFilter).start()
+  osc1.volume.value = -59
+  let osc2 = new Tone.Oscillator(285, "sine").connect(autoFilter).start()
+  osc2.volume.value = -32
+  let osc3 = new Tone.Oscillator(111, "sine").connect(autoFilter).start()
+  osc2.volume.value = -33
+  let omniOsc = new Tone.OmniOscillator(66, "pwm").connect(autoFilter).start();
+  omniOsc.value = -54
 
 
   let wave = new Tone.Waveform()
   master.connect(wave)
 
 
-  async function playSynth() {
 
-    await Tone.start()
+  const playSynth = async () => {
+      await Tone.start()
+      setPlay(!play)
   }
-
   //visual
   const p5Function = (p5Ref) => {
     const sketch = p => {
 
-      const width = 430
-      const height = 932
+      const width = 1200
+      const height = 890
       p.setup = () => {
         p.createCanvas(width, height)
-        p.background(0)
       }
 
       p.draw = () => {
+        p.background(0)
         p.fill(255)
-        p.ellipse(p.width/2,p.height/2,400)
+        p.ellipse(p.width/2,p.height/2,900)
         //array of points
         let buffer = wave.getValue(0);
-
         
-        for(let i = 0; i < buffer.length; i++){
+        
+        for(let i = 1; i < buffer.length; i++){
           //map toma CINCO argumentos, indice y rangos.
           //counter
-          let x = p.map(i, 0, buffer.length, 0, width)
+          let x1 = p.map(i-1, 0, buffer.length, 0, width)
           // amplitude
-          let y = p.map(buffer[i], -1, 1, 0, height)
-          p.point(x,y)
+          let y1 = p.map(buffer[i-1], -1, 1, 0, height)
+
+          let x2 = p.map(i, 0, buffer.length, 0, width)
+          let y2 = p.map(buffer[i], -1, 1, 0, height)
+          p.line(x1,y1,x2,y2)
+          p.stroke('#fae')
         }
       } 
     }
@@ -64,9 +74,11 @@ function App() {
   return (
     <>
     <div>
+    <Writes></Writes>
     {useDOMControl(p5Function)}
     </div>
-    <button onClick={playSynth}>Play</button>
+    <button onClick={playSynth}>{"Sound"}</button>
+
     </>
   )
 }
