@@ -16,13 +16,13 @@ function App() {
 
   let autoFilter = new Tone.AutoFilter("1n").connect(master).start();
 
-  let osc1 = new Tone.Oscillator(444, 'sine').connect(autoFilter).start()
+  let osc1 = new Tone.Oscillator(285, 'sine').connect(autoFilter).start()
   osc1.volume.value = -59
-  let osc2 = new Tone.Oscillator(285, "sine").connect(autoFilter).start()
+  let osc2 = new Tone.Oscillator(1020, "sine").connect(autoFilter).start()
   osc2.volume.value = -32
-  let osc3 = new Tone.Oscillator(111, "sine").connect(autoFilter).start()
+  let osc3 = new Tone.Oscillator(1111, "sine").connect(autoFilter).start()
   osc2.volume.value = -33
-  let omniOsc = new Tone.OmniOscillator(66, "pwm").connect(autoFilter).start();
+  let omniOsc = new Tone.OmniOscillator(606, "pwm").connect(autoFilter).start();
   omniOsc.value = -59
 
 
