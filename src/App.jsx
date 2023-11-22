@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import  * as p5 from "p5";
+import p5 from "p5";
 import { useState } from "react";
 import useDOMControl from "./useDOMControl";
 import Writes from "./Writes";
